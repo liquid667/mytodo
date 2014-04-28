@@ -3,14 +3,30 @@
         <div class="input-group">
             <input type="text" ng-model="searchCriterias" class="form-control" placeholder="Search criterias goes here...">
             <span class="input-group-btn">
-                <input type="submit" class="btn btn-primary" value="Search">
+                
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-search"></span> Search
+                </button>
             </span>
         </div>
     </form>
     
-    <ul class="list-group">
-        <li ng-repeat="hit in hits" class="list-group-item">
-            <span class="text-primary">{{ 'Title: ' + hit._source.title + ', Description:' + hit._source.description + ', Price: ' + hit._source.price }}</span>
-        </li>
-    </ul>
+    <p>&nbsp;</p>
+    
+    <table class="table table-striped table-condensed table-hover">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Description</td>
+                <td>Price</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="hit in hits">
+                <td>{{hit._source.title}}</td>
+                <td>{{hit._source.description}}</td>
+                <td>{{hit._source.price}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

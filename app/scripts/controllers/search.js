@@ -10,14 +10,14 @@ angular.module('mytodoApp')
                 index: 'test_index',
                 size: 50,
                 body: {
-                "query": {
-                    "query_string": {
-                       "query": $scope.searchCriterias,
-                       "fields": [
-                          "title"
+                query: {
+                    query_string: {
+                       query: $scope.searchCriterias,
+                       fields: [
+                          'title', 'price'
                        ]
                     }
-                }                
+                }
             }
             }).then(function(response) {
                 $scope.hits = response.hits.hits;

@@ -14,15 +14,19 @@ angular.module('mytodoApp', [
         }])
     .config(function($routeProvider) {
         $routeProvider
-            .when('/', {
+            .when('/todo', {
                 templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+                controller: 'MainController'
             })
             .when('/search', {
                 templateUrl: 'views/search.html',
                 controller: 'QueryController'
             })
+            .when('/login', {
+              templateUrl: 'views/login.html',
+              controller: 'LoginController'
+            })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/login'
             });
     });
