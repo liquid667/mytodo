@@ -7,7 +7,8 @@ angular
     'ngSanitize',
     'ngRoute',
     'ui.sortable',
-    'LocalStorageModule'
+    'LocalStorageModule',
+    'elasticsearch123'
   ])
   .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
       localStorageServiceProvider.setPrefix('ls');
@@ -17,6 +18,10 @@ angular
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .when('/search', {
+        templateUrl: 'views/search.html',
+        controller: 'SearchCtrl'
       })
       .otherwise({
         redirectTo: '/'
