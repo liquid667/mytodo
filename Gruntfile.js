@@ -27,10 +27,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['bowerInstall']
-      },
+//      bower: {
+//        files: ['bower.json'],
+//        tasks: ['bowerInstall']
+//      },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
@@ -143,13 +143,13 @@ module.exports = function (grunt) {
       }
     },
 
-    // Automatically inject Bower components into the app
-    bowerInstall: {
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath: '<%= yeoman.app %>/'
-      }
-    },
+//    // Automatically inject Bower components into the app
+//    bowerInstall: {
+//      app: {
+//        src: ['<%= yeoman.app %>/index.html'],
+//        ignorePath: '<%= yeoman.app %>/'
+//      }
+//    },
 
     // Renames files for browser caching purposes
     rev: {
@@ -349,7 +349,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'bowerInstall',
+//      'bowerInstall',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',

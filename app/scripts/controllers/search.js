@@ -1,12 +1,38 @@
 'use strict';
 
 angular.module('mytodoApp')
-  .controller('SearchCtrl', function ($scope) {
-      $scope.search = function() {
-        $scope.searchResults = [
-            'Result1',
-            'Result2',
-            'Result3'
-        ];
-      };
-  });
+    // We define an Angular controller that returns query results,
+    // Inputs: $scope and the 'es' service
+    .controller('QueryController', function($scope, es) {
+        $scope.search = function() {
+            // search for documents
+            es.search({
+                index: 'test_index',
+                size: 50,
+                body: {
+                "query": {
+                    "query_string": {
+                       "query": $scope.searchCriterias,
+                       "fields": [
+                          "title"
+                       ]
+                    }
+                }                
+            }
+            }).then(function(response) {
+                $scope.hits = response.hits.hits;
+            });
+        };
+    })
+
+    // We define an Angular controller that returns the server health
+    // Inputs: $scope and the 'es' service
+    .controller('ServerHealthController', function($scope, es) {
+        es.cluster.health(function(err, resp) {
+            if (err) {
+                $scope.data = err.message;
+            } else {
+                $scope.data = resp;
+            }
+        });
+    });

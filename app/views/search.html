@@ -1,28 +1,16 @@
 <div class="container">
     <form role="search" class="form-inline" ng-submit="search()">
         <div class="input-group">
-            <input type="text" ng-model="search" class="form-control" placeholder="Search criterias goes here...">
+            <input type="text" ng-model="searchCriterias" class="form-control" placeholder="Search criterias goes here...">
             <span class="input-group-btn">
                 <input type="submit" class="btn btn-primary" value="Search">
             </span>
         </div>
     </form>
     
-    <ul class="list-group" ng-controller="QueryController">
+    <ul class="list-group">
         <li ng-repeat="hit in hits" class="list-group-item">
-            <span class="text-primary">{{ hit.title }}</span>
+            <span class="text-primary">{{ 'Title: ' + hit._source.title + ', Description:' + hit._source.description + ', Price: ' + hit._source.price }}</span>
         </li>
     </ul>
-
-
-    <table class="table-responsive">
-        <thead>
-            <tr><td>Result</td></tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="result in searchResults">
-                <td>{{ result}}</td>
-            </tr>
-        </tbody>
-    </table>
 </div>
