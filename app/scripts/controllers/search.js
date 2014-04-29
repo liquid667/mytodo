@@ -7,18 +7,18 @@ angular.module('mytodoApp')
         $scope.search = function() {
             // search for documents
             es.search({
-                index: 'test_index',
+                index: 'logstash-2014.04.29',
                 size: 50,
                 body: {
-                query: {
-                    query_string: {
-                       query: $scope.searchCriterias,
-                       fields: [
-                          'title', 'price'
-                       ]
+                    "query": {
+                        "query_string": {
+                            "query": $scope.searchCriterias,
+                            "fields": [
+                                "msg1"
+                            ]
+                        }
                     }
                 }
-            }
             }).then(function(response) {
                 $scope.hits = response.hits.hits;
             });

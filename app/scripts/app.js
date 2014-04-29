@@ -27,6 +27,6 @@ angular.module('mytodoApp', [
               controller: 'LoginController'
             })
             .otherwise({
-                redirectTo: '/login'
+                redirectTo: '/search'
             });
     });
