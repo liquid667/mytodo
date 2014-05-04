@@ -26,6 +26,10 @@ angular.module('mytodoApp', [
               templateUrl: 'views/login.html',
               controller: 'LoginController'
             })
+            .when('/mappings', {
+              templateUrl: 'views/mappings.html',
+              controller: 'MappingsController'
+            })
             .otherwise({
                 redirectTo: '/search'
             });

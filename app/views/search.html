@@ -1,4 +1,38 @@
 <div class="container">
+    <!-- mappings input 
+    <form role="form" class="form-inline" ng-submit="getMapping()">
+        <input type="submit" class="btn btn-primary btn-group-sm" value="Get Mapping">
+    </form>
+    <p>{{mappings}}</p>
+    <div ui-sortable ng-model="mappings">
+        <span ng-repeat="mapping in mappings" class="label label-primary" style="cursor: move; margin-left: 3px;">
+            {{mapping}}
+            <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
+        </span>
+    </div>
+    <p></p>
+-->
+    <!-- field input -->
+    <form role="form" class="form-inline" ng-submit="addField()">
+        <div class="input-group">
+            <input type="text" ng-model="field" placeholder="Add field?" class="form-control">
+            <span class="input-group-btn">
+                <input type="submit" class="btn btn-primary" value="Add">
+            </span>
+        </div>
+    </form>
+    <p></p>
+
+    <!-- field list -->
+    <div ui-sortable ng-model="fields">
+        <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
+            {{field}}
+            <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
+        </span>
+    </div>
+</div>
+<p></p>
+<div class="container">
     <form role="search" class="form-inline" ng-submit="search()">
         <div class="input-group">
             <input type="text" ng-model="searchCriterias" class="form-control" placeholder="Search criterias goes here...">
@@ -9,19 +43,40 @@
             </span>
         </div>
     </form>
-    
-    <p>&nbsp;</p>
+</div>
+<p>&nbsp;</p>
 
-    <table class="table table-bordered table-condensed table-hover">
+<div class="container-fluid">
+    <!--
+    <pre>Sorting predicate={{predicate}}; reverse={{reverse}}</pre>
+    -->
+    <span class="badge">{{'Count:' + hitCount}}</span>
+    <table class="table table-bordered table-striped table-hover table-condensed font-small">
         <thead>
             <tr>
-                <th ng-repeat="(key, val) in hits[0]">{{key}}</th>
+                <th ng-repeat="field in fields">{{field}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="hit in hits">
-                <td ng-repeat="(key, val) in hit">{{val}}</td>
+            <tr ng-repeat="hit in hits| orderBy:predicate:reverse">
+                <td ng-repeat="field in fields" >{{hit._source[field]}}</td>
             </tr>
         </tbody>
     </table>
+
+    <!--
+    <table class="table table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th ng-repeat="(key, val) in hits._source[0]">{{key}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="hit in hits | orderBy:predicate:reverse">
+                <td ng-repeat="(key, val) in hit">{{val}}</td>
+                <td>{{hit._source.val}}</td>
+            </tr>
+        </tbody>
+    </table>
+    -->
 </div>

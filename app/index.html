@@ -24,8 +24,8 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="container"><span ng-controller="ServerHealthController" class="text-center" style="background-color: {{ data.status }}">Cluster status</span></div>    
-    <div class="container" ng-view=""></div>
+    <div class="container-fluid"><span ng-controller="ServerHealthController" class="label label-{{serverStatus}}">Cluster status</span></div>    
+    <div class="container-fluid" ng-view=""></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -65,6 +65,7 @@
     <script src="scripts/controllers/search.js"></script>
     <script src="scripts/services/search.js"></script>
     <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/mappings.js"></script>
     <!-- endbuild -->
 </body>
 </html>
