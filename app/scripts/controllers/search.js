@@ -20,7 +20,7 @@ angular.module('mytodoApp')
 
             $scope.removeField = function(index) {
                 $scope.fields.splice(index, 1);
-            };            
+            };
             
             $scope.search = function() {
                 es.search({
@@ -64,15 +64,6 @@ angular.module('mytodoApp')
                     $scope.hitCount = response.hits.total;
                 });
             };
-
-            $scope.getMapping = function() {
-                es.indices.getMapping({
-                    "index": "logstash-2014.04.29"
-                }).then(function(response) {
-                    $scope.mappings = response.mappings;
-                });
-            };
-
 //        $scope.changeSorting = function(column) {
 //            var sort = $scope.sort;
 //            
