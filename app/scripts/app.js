@@ -26,7 +26,7 @@ angular.module('mytodoApp', [
               templateUrl: 'views/login.html',
               controller: 'LoginController'
             })
-            .when('/mappings', {
+            .when('/mapping', {
               templateUrl: 'views/mappings.html',
               controller: 'MappingsController'
             })

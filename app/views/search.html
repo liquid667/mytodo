@@ -1,17 +1,4 @@
 <div class="container">
-    <!-- mappings input 
-    <form role="form" class="form-inline" ng-submit="getMapping()">
-        <input type="submit" class="btn btn-primary btn-group-sm" value="Get Mapping">
-    </form>
-    <p>{{mappings}}</p>
-    <div ui-sortable ng-model="mappings">
-        <span ng-repeat="mapping in mappings" class="label label-primary" style="cursor: move; margin-left: 3px;">
-            {{mapping}}
-            <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
-        </span>
-    </div>
-    <p></p>
--->
     <!-- field input -->
     <form role="form" class="form-inline" ng-submit="addField()">
         <div class="input-group">
@@ -51,7 +38,7 @@
     <pre>Sorting predicate={{predicate}}; reverse={{reverse}}</pre>
     -->
     <span class="badge">{{'Count:' + hitCount}}</span>
-    <table class="table table-bordered table-striped table-hover table-condensed font-small">
+    <table class="table table-striped table-hover table-condensed font-small">
         <thead>
             <tr>
                 <th ng-repeat="field in fields">{{field}}</th>
@@ -63,20 +50,4 @@
             </tr>
         </tbody>
     </table>
-
-    <!--
-    <table class="table table-bordered table-condensed table-hover">
-        <thead>
-            <tr>
-                <th ng-repeat="(key, val) in hits._source[0]">{{key}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="hit in hits | orderBy:predicate:reverse">
-                <td ng-repeat="(key, val) in hit">{{val}}</td>
-                <td>{{hit._source.val}}</td>
-            </tr>
-        </tbody>
-    </table>
-    -->
 </div>
