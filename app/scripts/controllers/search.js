@@ -76,6 +76,30 @@ angular.module('mytodoApp')
 //                sort.descending = false;
 //            }
 //        };
+
+            $scope.getMapping = function() {
+                es.indices.getMapping({
+                    "index": "logstash-2014.04.29"
+                }).then(function(response) {
+                    var myTypes = [];
+                    var fields = {};
+                    for (var index in response) {
+//                        if (indexIsNotIgnored(index)) {
+                        for (var type in response[index].mappings) {
+                            if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+                                myTypes.push(type);
+                                var properties = response[index].mappings[type].properties;
+                                for (var field in properties) {
+                                    fields[field] = field;
+//                                    handleSubfields(properties[field], field, fields, undefined);
+                                }
+                            }
+                        }
+//                        }
+                    }
+                    $scope.fieldss = fields;
+                });
+            };
         })
 
         // We define an Angular controller that returns the server health
