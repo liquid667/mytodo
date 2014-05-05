@@ -7,6 +7,8 @@ angular.module('mytodoApp')
             $scope.predicate = 'timestamp';
             $scope.reverse = 'true';
             
+            $scope.states = ['Alabama', 'Alaska'];
+            
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "msg1"];
             $scope.$watch('fields', function() {
