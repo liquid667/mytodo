@@ -1,75 +1,51 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('ModalDemoCtrl', function($scope, $modal, $log) {
-
-            $scope.aside = {
-                "title": "Title",
-                "content": "Hello Aside<br />This is a multiline message!"
-            };
-
-            $scope.items = ['item1', 'item2', 'item3'];
-
-            $scope.open = function(size) {
-
-                var modalInstance = $modal.open({
-                    controller: 'ModalInstanceCtrl',
-                    templateUrl: 'views/modal.tpl.html',
-                    size: size,
-                    resolve: {
-                        items: function() {
-                            return $scope.items;
-                        }
-                    }
-                });
-
-                modalInstance.result.then(function(selectedItem) {
-                    $scope.selected = selectedItem;
-                }, function() {
-                    $log.info('Modal dismissed at: ' + new Date());
-                });
-            };
-        })
-        .controller('ModalInstanceCtrl', function($scope, $modalInstance, items, es, localStorageService) {
-            $scope.items = items;
-            $scope.selected = {
-                item: $scope.items[0]
-            };
-
-            $scope.ok = function() {
-                $modalInstance.close($scope.selected.item);
-            };
-
-            $scope.cancel = function() {
-                $modalInstance.dismiss('cancel');
-            };
-            
+        .controller('ModalController', function($scope, $filter, es, localStorageService) {
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
 
+            $scope.$watch('fields', function() {
+                localStorageService.add('fields', $scope.fields.join('\n'));
+            }, true);
+
+            $scope.addField = function() {
+                $scope.fields.push($scope.field);
+                $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
+                $scope.field = '';
+            };
+
+            $scope.removeField = function(index) {
+                $scope.columns.push($scope.fields[index]);
+                $scope.fields.splice(index, 1);
+            };
+
+//            $scope.getColumns = function() {
             es.indices.getMapping({
-                    "index": "logstash-2014.04.29"
-                }).then(function(response) {
-                    var myTypes = [];
-                    var myColumns = [];
-                    for (var index in response) {
-                        for (var type in response[index].mappings) {
-                            if (myTypes.indexOf(type) === -1 && type !== "_default_") {
-                                myTypes.push(type);
-                                var properties = response[index].mappings[type].properties;
-                                for (var field in properties) {
-                                    if(!isFieldStored(fieldsInStore, field)){
-                                        myColumns.push(field);
-                                    }
+                "index": "logstash-2014.04.29"
+            }).then(function(response) {
+                var myTypes = [];
+                var myColumns = [];
+                for (var index in response) {
+                    for (var type in response[index].mappings) {
+                        if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+                            myTypes.push(type);
+                            var properties = response[index].mappings[type].properties;
+                            for (var field in properties) {
+                                if (!isFieldStored(fieldsInStore, field)) {
+                                    myColumns.push(field);
                                 }
+                                //handleSubfields(properties[field], field, myColumns, undefined);
                             }
                         }
                     }
-                    $scope.columns = myColumns;
-                });
+                }
+                $scope.columns = myColumns;
+            });
+//            };
 
             function isFieldStored(array, field) {
-                if(array.indexOf(field) === -1){
+                if (array.indexOf(field) === -1) {
                     return false;
                 }
                 return true;

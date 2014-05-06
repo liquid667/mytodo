@@ -1,22 +1,43 @@
-<div ng-controller="ModalDemoCtrl">
-    <script type="text/ng-template" id="views/modal.tpl.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Columns</h3>
-        </div>
-        <div class="modal-body">
-            <ul>
-                <li ng-repeat="item in columns">
-                    <a ng-click="selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
+<div ng-controller="ModalController">
 
-    <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+    <!-- Button trigger modal -->
+    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Show modal</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+
+                    <!-- field input -->
+                    <form role="form" class="form-inline" ng-submit="addField()">
+                        <div class="input-group">
+                            <input type="text" ng-model="field" placeholder="Add field?" ng-options="column for column in columns" class="form-control" bs-typeahead>
+                            <span class="input-group-btn">
+                                <input type="submit" class="btn btn-primary" value="Add">
+                            </span>
+                        </div>
+                    </form>
+                    <p>{{columns}}</p>
+
+                    <!-- field list -->
+                    <div ui-sortable ng-model="fields">
+                        <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
+                            {{field}}
+                            <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
