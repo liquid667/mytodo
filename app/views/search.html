@@ -1,14 +1,18 @@
-<div class="container" ng-controller="MappingsController">
+<div class="container">
+    <!--
+    <button type="button" class="btn btn-sm btn-primary" data-animation="am-fade-and-scale" data-placement="top" bs-modal="modal">Columns</button>
+    -->
+    
     <!-- field input -->
     <form role="form" class="form-inline" ng-submit="addField()">
         <div class="input-group">
-            <input type="text" ng-model="field" placeholder="Add field?" ng-options="column as column for columns in getMapping()" class="form-control"  bs-typeahead>
+            <input type="text" ng-model="field" placeholder="Add field?" ng-options="column for column in columns" class="form-control" bs-typeahead>
             <span class="input-group-btn">
                 <input type="submit" class="btn btn-primary" value="Add">
             </span>
         </div>
     </form>
-    <p></p>
+    <p>{{columns}}</p>
 
     <!-- field list -->
     <div ui-sortable ng-model="fields">
@@ -38,7 +42,7 @@
     <pre>Sorting predicate={{predicate}}; reverse={{reverse}}</pre>
     -->
     <span class="badge">{{'Count:' + hitCount}}</span>
-    <table class="table table-striped table-hover table-condensed font-small">
+    <table class="table table-striped table-hover table-condensed font-sm">
         <thead>
             <tr>
                 <th ng-repeat="field in fields">{{field}}</th>

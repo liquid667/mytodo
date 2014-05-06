@@ -9,7 +9,8 @@ angular.module('mytodoApp', [
             'LocalStorageModule',
             'elasticsearch',
             'mgcrea.ngStrap',
-            'ngAnimate'
+            'ngAnimate',
+            'ui.bootstrap'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
             localStorageServiceProvider.setPrefix('ls');
@@ -30,6 +31,10 @@ angular.module('mytodoApp', [
             })
             .when('/mapping', {
               templateUrl: 'views/mappings.html',
+              controller: 'MappingsController'
+            })
+            .when('/modal', {
+              templateUrl: 'views/modal.html',
               controller: 'MappingsController'
             })
             .otherwise({
