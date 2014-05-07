@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('mytodoApp')
-        // We define an Angular controller that returns query results,
-        // Inputs: $scope and the 'es' service
-        .controller('QueryController', function($scope, $filter, es, localStorageService) {
+        .controller('QueryController', function($scope, $filter, es, localStorageService, usSpinnerService ) {
             $scope.predicate = 'timestamp';
             $scope.reverse = 'true';
+            
+            var index = 'logstash-2014.05.07';
 
             $scope.search = function() {
+                usSpinnerService.spin('spinner-1');
                 es.search({
-                    'index': 'logstash-2014.04.29',
-//                    'size': 50,
+                    'index': index,
                     body: {
                         "query": {
                             "filtered": {
@@ -45,6 +45,7 @@ angular.module('mytodoApp')
                             }]
                     }
                 }).then(function(response) {
+                    usSpinnerService.stop('spinner-1');
                     $scope.hits = response.hits.hits;
                     $scope.hitCount = response.hits.total;
                 });
@@ -69,7 +70,7 @@ angular.module('mytodoApp')
             };
 
             es.indices.getMapping({
-                "index": "logstash-2014.04.29"
+                'index': index
             }).then(function(response) {
                 var myTypes = [];
                 var myColumns = [];
@@ -95,5 +96,4 @@ angular.module('mytodoApp')
                 }
                 return true;
             }
-
         });

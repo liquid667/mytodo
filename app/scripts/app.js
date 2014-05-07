@@ -9,7 +9,8 @@ angular.module('mytodoApp', [
             'LocalStorageModule',
             'elasticsearch',
             'mgcrea.ngStrap',
-            'ngAnimate'
+            'ngAnimate',
+            'angularSpinner'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
             localStorageServiceProvider.setPrefix('ls');
