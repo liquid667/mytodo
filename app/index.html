@@ -40,13 +40,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
                     <li><a href="#/search"><span class="glyphicon glyphicon-search"></span></a></li>
-                    <li><a href="#/modal">Modal</a></li>
-                    <li><a href="#/todo">Todo</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right" >
-                    <li><span style="vertical-align: middle;" ng-controller="ServerHealthController" class="label label-{{serverStatus}}">Cluster status</span></li>
+                    <li><a href="#/config"><span class="glyphicon glyphicon-cog"></span></a></li>
+                    <li><span ng-controller="ServerHealthController" class="label label-{{serverStatus}}">Cluster status</span></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
+
         </div><!-- /.container-fluid -->
     </nav>
 
@@ -97,6 +97,7 @@
     <script src="scripts/controllers/mappings.js"></script>
     <script src="scripts/controllers/serverhealth.js"></script>
     <script src="scripts/controllers/modal.js"></script>
+    <script src="scripts/controllers/config.js"></script>
     <!-- endbuild -->
 </body>
 </html>

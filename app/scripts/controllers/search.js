@@ -10,7 +10,7 @@ angular.module('mytodoApp')
             $scope.search = function() {
                 es.search({
                     'index': 'logstash-2014.04.29',
-                    'size': 50,
+//                    'size': 50,
                     body: {
                         "query": {
                             "filtered": {
@@ -37,7 +37,7 @@ angular.module('mytodoApp')
                                 }
                             }
                         },
-//                        "size": 20,
+                        "size": 50,
                         "sort": [{
                                 "@timestamp": {
                                     "order": "desc"
@@ -49,16 +49,6 @@ angular.module('mytodoApp')
                     $scope.hitCount = response.hits.total;
                 });
             };
-//        $scope.changeSorting = function(column) {
-//            var sort = $scope.sort;
-//            
-//            if (sort.column === column) {
-//                sort.descending = !sort.descending;
-//            } else {
-//                sort.column = column;
-//                sort.descending = false;
-//            }
-//        };
 
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
@@ -78,7 +68,6 @@ angular.module('mytodoApp')
                 $scope.fields.splice(index, 1);
             };
 
-//            $scope.getColumns = function() {
             es.indices.getMapping({
                 "index": "logstash-2014.04.29"
             }).then(function(response) {
@@ -93,14 +82,12 @@ angular.module('mytodoApp')
                                 if (!isFieldStored(fieldsInStore, field)) {
                                     myColumns.push(field);
                                 }
-                                //handleSubfields(properties[field], field, myColumns, undefined);
                             }
                         }
                     }
                 }
                 $scope.columns = myColumns;
             });
-//            };
 
             function isFieldStored(array, field) {
                 if (array.indexOf(field) === -1) {

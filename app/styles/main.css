@@ -118,3 +118,11 @@ body {
 .font-xs {
     font-size: 7pt;
 }
+
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+    margin-right: 0;
+}
+
+.modal {
+    overflow-y: auto;
+}

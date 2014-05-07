@@ -1,24 +1,35 @@
-<div class="container">
-    <!-- field input -->
-    <form role="form" class="form-inline" ng-submit="addField()">
-        <div class="input-group">
-            <input type="text" ng-model="field" placeholder="Add field?" ng-options="column for column in columns" class="form-control" bs-typeahead>
-            <span class="input-group-btn">
-                <input type="submit" class="btn btn-primary" value="Add">
-            </span>
-        </div>
-    </form>
-    <p>{{columns}}</p>
-
-    <!-- field list -->
-    <div ui-sortable ng-model="fields">
-        <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
-            {{field}}
-            <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
-        </span>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-offset-12 pull-right"><a href="" data-toggle="collapse" data-target="#columnConfig"><span class="glyphicon glyphicon-cog"></span></a></div>
     </div>
 </div>
-<p></p>
+
+<div id="columnConfig" class="collapse">
+    <div class="container">
+        <!-- field input -->
+        <form role="form" class="form-inline" ng-submit="addField()">
+            <div class="input-group">
+                <input type="text" ng-model="field" placeholder="Add field?" ng-options="column for column in columns" class="form-control" bs-typeahead>
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary" value="Add">
+                </span>
+            </div>
+        </form>
+        <h5>Available columns</h5>
+        <span ng-repeat="column in columns" class="label label-default" style="margin-left: 3px;">{{column}}</span>
+
+        <h5>Selected columns</h5>
+        <!-- field list -->
+        <div ui-sortable ng-model="fields">
+            <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
+                {{field}}
+                <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
+            </span>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+</div>
+
 <div class="container">
     <form role="search" class="form-inline" ng-submit="search()">
         <div class="input-group">
@@ -46,7 +57,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="hit in hits| orderBy:predicate:reverse">
-                <td ng-repeat="field in fields" >{{hit._source[field]}}</td>
+                <td ng-repeat="field in fields">{{hit._source[field]}}</td>
             </tr>
         </tbody>
     </table>

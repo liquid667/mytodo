@@ -20,7 +20,6 @@ angular.module('mytodoApp')
                 $scope.fields.splice(index, 1);
             };
 
-//            $scope.getColumns = function() {
             es.indices.getMapping({
                 "index": "logstash-2014.04.29"
             }).then(function(response) {
@@ -35,14 +34,12 @@ angular.module('mytodoApp')
                                 if (!isFieldStored(fieldsInStore, field)) {
                                     myColumns.push(field);
                                 }
-                                //handleSubfields(properties[field], field, myColumns, undefined);
                             }
                         }
                     }
                 }
                 $scope.columns = myColumns;
             });
-//            };
 
             function isFieldStored(array, field) {
                 if (array.indexOf(field) === -1) {

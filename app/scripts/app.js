@@ -36,6 +36,10 @@ angular.module('mytodoApp', [
               templateUrl: 'views/modal.html',
               controller: 'MappingsController'
             })
+            .when('/config', {
+              templateUrl: 'views/config.html',
+              controller: 'ConfigControl'
+            })
             .otherwise({
                 redirectTo: '/search'
             });

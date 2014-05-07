@@ -9,7 +9,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">Select columns to show</h4>
                 </div>
                 <div class="modal-body">
 
@@ -22,8 +22,10 @@
                             </span>
                         </div>
                     </form>
-                    <p>{{columns}}</p>
+                    <h5>Available columns</h5>
+                        <span ng-repeat="column in columns" class="label label-default" style="margin-left: 3px;">{{column}}</span>
 
+                    <h5>Selected columns</h5>
                     <!-- field list -->
                     <div ui-sortable ng-model="fields">
                         <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
