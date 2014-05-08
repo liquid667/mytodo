@@ -2,10 +2,10 @@
 
 angular.module('mytodoApp')
         .controller('ConfigControl', function($scope, localStorageService) {
-            $scope.hostname = '';
+            var hostnameInStore = localStorageService.get('hostname');
+            $scope.hostname = hostnameInStore || 'localhost:9200';
     
             $scope.saveConfig = function() {
                 localStorageService.set('hostname', $scope.hostname);
             };
-
         });

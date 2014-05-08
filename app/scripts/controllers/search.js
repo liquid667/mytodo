@@ -5,7 +5,7 @@ angular.module('mytodoApp')
             $scope.predicate = 'timestamp';
             $scope.reverse = 'true';
             
-            var index = 'logstash-2014.05.07';
+            var index = 'logstash-2014.04.29';
 
             $scope.search = function() {
                 usSpinnerService.spin('spinner-1');
@@ -48,9 +48,11 @@ angular.module('mytodoApp')
                     usSpinnerService.stop('spinner-1');
                     $scope.hits = response.hits.hits;
                     $scope.hitCount = response.hits.total;
+                }).error(function(response) {
+                   usSpinnerService.stop('spinner-1');
                 });
             };
-
+            
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
 

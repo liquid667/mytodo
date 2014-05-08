@@ -1,3 +1,4 @@
+elk/logs/logstash.log
 node_modules
 dist
 .tmp
