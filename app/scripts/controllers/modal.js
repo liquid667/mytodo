@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('ModalController', function($scope, $filter, es, localStorageService) {
+        .controller('ModalCtrl', function($scope, $filter, es, localStorageService) {
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
 

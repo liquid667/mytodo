@@ -12,6 +12,7 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,app}) styles/main.css -->
@@ -43,7 +44,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right" >
                     <li><a href="#/config"><span class="glyphicon glyphicon-cog"></span></a></li>
-                    <li><span ng-controller="ServerHealthController" class="label label-{{serverStatus}}">Cluster status</span></li>
+                    <li><span ng-controller="ServerHealthCtrl" class="label label-{{serverStatus}}">Cluster status</span></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
 
@@ -87,19 +88,21 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/spin.js/spin.js"></script>
     <script src="bower_components/angular-spinner/angular-spinner.js"></script>
+    <script src="bower_components/momentjs/moment.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/services/search.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/search.js"></script>
-    <script src="scripts/services/search.js"></script>
     <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/mappings.js"></script>
     <script src="scripts/controllers/serverhealth.js"></script>
     <script src="scripts/controllers/modal.js"></script>
     <script src="scripts/controllers/config.js"></script>
+    <script src="scripts/controllers/timepicker.js"></script>
     <!-- endbuild -->
 </body>
 </html>

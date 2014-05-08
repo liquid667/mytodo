@@ -1,0 +1,10 @@
+<p>This is the timepicker view.</p>
+<!--Primary buttons with dropdown menu-->
+<div class="btn-group">
+    <button class="btn btn-primary">{{timespan}}</button>
+    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
+    <ul class="dropdown-menu">
+        <li ng-repeat="time in times" class="dropdown-right"><a data-target="#" ng-model="setSelectedValue({{time}})">Last {{time}}</a></li>
+    </ul>
+</div>
+<p>{{selectedTimespan}}</p>

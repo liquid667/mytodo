@@ -1,17 +1,17 @@
 'use strict';
 
-describe('Controller: ConfigController', function () {
+describe('Controller: TimepickerController', function () {
 
   // load the controller's module
   beforeEach(module('mytodoApp'));
 
-  var ConfigCtrl,
+  var TimepickerCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ConfigCtrl = $controller('ConfigController', {
+    TimepickerCtrl = $controller('TimepickerController', {
       $scope: scope
     });
   }));

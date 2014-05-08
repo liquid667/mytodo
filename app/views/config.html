@@ -1,16 +1,18 @@
 <div class="container">
     <form role="form" ng-submit="saveConfig()">
         <div class="row">
-            <div class="col-lg-12" style="background-color: #00b3ee;">
+            <div class="col-lg-12">
                 <h2>Configuration</h2>
             </div>
         </div>
-        <div class="row" style="background-color: #00b3ee;">
-            <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-2"><h5>Hostname: </h5></div>
+            <div class="col-lg-10">
                 <input type="text" class="form-control" placeholder="hostname:port, ex: localhost:9200" ng-model="hostname">
             </div>
         </div>
-        <div class="row" style="background-color: #00b3ee;">
+        <p></p>
+        <div class="row">
             <div class="col-lg-6">&nbsp;</div>
             <div class="col-lg-6 right" style="text-align: right;">
                 <button class="btn btn-sm btn-primary" type="submit">Save</button>

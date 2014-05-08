@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mytodoApp')
-    .controller('MainController', function($scope, localStorageService) {
+    .controller('MainCtrl', function($scope, localStorageService) {
         var todosInStore = localStorageService.get('todos');
         $scope.todos = todosInStore && todosInStore.split('\n') || [];
         $scope.$watch('todos', function() {

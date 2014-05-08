@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mytodoApp')
-    .controller('ServerHealthController', function($scope, es) {
+    .controller('ServerHealthCtrl', function($scope, es) {
         es.cluster.health(function(err, resp) {
             if (err) {
                 $scope.data = err.message;

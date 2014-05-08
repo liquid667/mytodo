@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('QueryController', function($scope, $filter, es, localStorageService, usSpinnerService ) {
+        .controller('QueryCtrl', function($scope, $filter, es, localStorageService, usSpinnerService) {
             $scope.predicate = 'timestamp';
             $scope.reverse = 'true';
             
-            var index = 'logstash-2014.04.29';
+            var index = 'logstash-2014.04.29,logstash-2014.04.30';
 
             $scope.search = function() {
-                usSpinnerService.spin('spinner-1');
+                usSpinnerService.spin('searchStatusSpinner');
                 es.search({
                     'index': index,
                     body: {
@@ -45,11 +45,14 @@ angular.module('mytodoApp')
                             }]
                     }
                 }).then(function(response) {
-                    usSpinnerService.stop('spinner-1');
+                    usSpinnerService.stop('searchStatusSpinner');
                     $scope.hits = response.hits.hits;
                     $scope.hitCount = response.hits.total;
-                }).error(function(response) {
-                   usSpinnerService.stop('spinner-1');
+                }, function(error) {
+                    if(error) {
+                        usSpinnerService.stop('searchStatusSpinner');
+                        console.log('Elasticsearch returned error: ' + error);
+                    }
                 });
             };
             
@@ -84,6 +87,7 @@ angular.module('mytodoApp')
                             for (var field in properties) {
                                 if (!isFieldStored(fieldsInStore, field)) {
                                     myColumns.push(field);
+                                    //handleSubfields(properties[field], field, myColumns, undefined);
                                 }
                             }
                         }
@@ -98,4 +102,35 @@ angular.module('mytodoApp')
                 }
                 return true;
             }
+            
+//            function handleSubfields(field, fieldName, myFields, nestedPath) {
+//                if (field.hasOwnProperty("properties")) {
+//                    var nested = (field.type === "nested" || field.type === "object");
+//                    if (nested) {
+//                        nestedPath = fieldName;
+//                    }
+//                    for (var subField in field.properties) {
+//                        var newField = fieldName + "." + subField;
+//                        handleSubfields(field.properties[subField], newField, myFields, nestedPath);
+//                    }
+//                } else {
+//                    if (field.hasOwnProperty("fields")) {
+//                        for (var multiField in field.fields) {
+//                            var multiFieldName = fieldName + "." + multiField;
+//                            // TODO jettro : fix the nested documents with multi_fields
+//                            if (!myFields[multiFieldName] && fieldName !== multiField) {
+//                                myFields[multiFieldName] = field.fields[multiField];
+//                                myFields[multiFieldName].nestedPath = nestedPath;
+//                                myFields[multiFieldName].forPrint = multiFieldName + " (" + field.type + ")";
+//                            }
+//                        }
+//                    }
+//                    if (!myFields[fieldName]) {
+//                        myFields[fieldName] = field;
+//                        myFields[fieldName].nestedPath = nestedPath;
+//                        myFields[fieldName].forPrint = fieldName + " (" + field.type + ")";
+//                    }
+//                }
+//            }
+            
         });

@@ -10,7 +10,8 @@ angular.module('mytodoApp', [
             'elasticsearch',
             'mgcrea.ngStrap',
             'ngAnimate',
-            'angularSpinner'
+            'angularSpinner',
+            'angularMoment'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
             localStorageServiceProvider.setPrefix('ls');
@@ -19,27 +20,27 @@ angular.module('mytodoApp', [
         $routeProvider
             .when('/todo', {
                 templateUrl: 'views/main.html',
-                controller: 'MainController'
+                controller: 'MainCtrl'
             })
             .when('/search', {
                 templateUrl: 'views/search.html',
-                controller: 'QueryController'
+                controller: 'QueryCtrl'
             })
             .when('/login', {
               templateUrl: 'views/login.html',
-              controller: 'LoginController'
-            })
-            .when('/mapping', {
-              templateUrl: 'views/mappings.html',
-              controller: 'MappingsController'
+              controller: 'LoginCtrl'
             })
             .when('/modal', {
               templateUrl: 'views/modal.html',
-              controller: 'MappingsController'
+              controller: 'ModalCtrl'
             })
             .when('/config', {
               templateUrl: 'views/config.html',
-              controller: 'ConfigControl'
+              controller: 'ConfigCtrl'
+            })
+            .when('/timepicker', {
+              templateUrl: 'views/timepicker.html',
+              controller: 'TimepickerCtrl'
             })
             .otherwise({
                 redirectTo: '/search'
