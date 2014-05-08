@@ -126,3 +126,7 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
 .modal {
     overflow-y: auto;
 }
+
+.btn-fixed-size {
+    min-width: 80px;
+}

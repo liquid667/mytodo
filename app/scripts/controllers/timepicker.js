@@ -7,6 +7,6 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope) {
     
     $scope.setSelectedValue = function(time) {
         console.log('setSelectedValue('+time+')');
-      selectedTimespan = time;
+      $scope.timespan = time;
     };
 });
