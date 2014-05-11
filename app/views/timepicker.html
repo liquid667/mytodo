@@ -1,5 +1,4 @@
-<p>This is the timepicker view.</p>
-<!--Primary buttons with dropdown menu-->
+<!-- Timepicker with dropdown menu -->
 <div class="btn-group">
     <button class="btn btn-sm btn-primary btn-fixed-size">{{timespan}}</button>
     <button data-toggle="dropdown" class="btn btn-sm btn-primary dropdown-toggle"><span class="caret"></span></button>
@@ -7,4 +6,3 @@
         <li ng-repeat="time in times" class="dropdown-right"><a data-target="#" ng-click="setSelectedValue(time)">Last {{time}}</a></li>
     </ul>
 </div>
-<p>{{selectedTimespan}}</p>

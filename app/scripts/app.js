@@ -11,7 +11,7 @@ angular.module('mytodoApp', [
             'mgcrea.ngStrap',
             'ngAnimate',
             'angularSpinner',
-            'angularMoment'
+            'angular-momentjs'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
             localStorageServiceProvider.setPrefix('ls');

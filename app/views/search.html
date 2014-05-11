@@ -30,17 +30,41 @@
     <p>&nbsp;</p>
 </div>
 
-<div class="container">
-    <form role="search" class="form-inline" ng-submit="search()">
-        <div class="input-group">
-            <input type="text" ng-model="searchCriterias" class="form-control" placeholder="Search criterias goes here...">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
-            </span>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-lg-1">&nbsp;</div>
+    <div class="col-lg-2 right">
+        <!-- Timepicker with dropdown menu -->
+        <div class="btn-group" ng-controller="TimepickerCtrl">
+            <button class="btn btn-sm btn-primary btn-fixed-width btn-fixed-height">{{timespan}}</button>
+            <button data-toggle="dropdown" class="btn btn-sm btn-primary dropdown-toggle btn-fixed-height"><span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="time in times" class="dropdown-right"><a data-target="#" ng-click="setSelectedValue(time)">Last {{time}}</a></li>
+            </ul>
         </div>
-    </form>
+    </div>
+    <div class="col-lg-8">
+        <form role="search" class="form-inline" ng-submit="search()">
+            <div class="input-group">
+                <input type="text" ng-model="searchCriterias" class="form-control" placeholder="Search criterias goes here...">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-1">&nbsp;</div>
+</div>
+
+    <div class="row">
+        <div class="col-lg-1">&nbsp;</div>
+        <div class="col-lg-10 text-center">
+            From:{{timespan.from}}, To:{{timespan.to}}
+        </div>
+        <div class="col-lg-1">&nbsp;</div>
+    </div>
 </div>
 <p>&nbsp;</p>
 

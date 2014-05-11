@@ -1,108 +1,116 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('QueryCtrl', function($scope, $filter, es, localStorageService, usSpinnerService) {
-            $scope.predicate = 'timestamp';
-            $scope.reverse = 'true';
-            
-            var index = 'logstash-2014.04.29,logstash-2014.04.30';
+    .controller('QueryCtrl', function ($scope, $filter, es, localStorageService, usSpinnerService, timespan) {
+        $scope.predicate = 'timestamp';
+        $scope.reverse = 'true';
 
-            $scope.search = function() {
-                usSpinnerService.spin('searchStatusSpinner');
-                es.search({
-                    'index': index,
-                    body: {
-                        "query": {
-                            "filtered": {
-                                "query": {
-                                    "bool": {
-                                        "should": [{
-                                                "query_string": {
-                                                    "query": $scope.searchCriterias
+        var index = 'logstash-2014.04.29';
+
+        $scope.timespan = timespan;
+
+        $scope.search = function () {
+            usSpinnerService.spin('searchStatusSpinner');
+            es.search({
+                'index': index,
+                body: {
+                    "query": {
+                        "filtered": {
+                            "query": {
+                                "bool": {
+                                    "should": [
+                                        {
+                                            "query_string": {
+                                                "query": $scope.searchCriterias
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "filter": {
+                                "bool": {
+                                    "must": [
+                                        {
+                                            "range": {
+                                                "@timestamp": {
+                                                    'from': timespan.from,
+                                                    "to": "now"
                                                 }
-                                            }]
-                                    }
-                                },
-                                "filter": {
-                                    "bool": {
-                                        "must": [{
-                                                "range": {
-                                                    "@timestamp": {
-                                                        "from": 1398338797454,
-                                                        "to": "now"
-                                                    }
-                                                }
-                                            }]
-                                    }
+                                            }
+                                        }
+                                    ]
                                 }
                             }
-                        },
-                        "size": 50,
-                        "sort": [{
-                                "@timestamp": {
-                                    "order": "desc"
-                                }
-                            }]
-                    }
-                }).then(function(response) {
+                        }
+                    },
+                    "size": 50,
+                    "sort": [
+                        {
+                            "@timestamp": {
+                                "order": "desc"
+                            }
+                        }
+                    ]
+                }
+            }).then(function (response) {
+                usSpinnerService.stop('searchStatusSpinner');
+                $scope.hits = response.hits.hits;
+                $scope.hitCount = response.hits.total;
+            }, function (error) {
+                if (error) {
                     usSpinnerService.stop('searchStatusSpinner');
-                    $scope.hits = response.hits.hits;
-                    $scope.hitCount = response.hits.total;
-                }, function(error) {
-                    if(error) {
-                        usSpinnerService.stop('searchStatusSpinner');
-                        console.log('Elasticsearch returned error: ' + error);
-                    }
-                });
-            };
-            
-            var fieldsInStore = localStorageService.get('fields');
-            $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
+                    console.log('Elasticsearch returned error: ' + error);
+                }
+            });
+        };
 
-            $scope.$watch('fields', function() {
-                localStorageService.add('fields', $scope.fields.join('\n'));
-            }, true);
+        var fieldsInStore = localStorageService.get('fields');
+        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
 
-            $scope.addField = function() {
-                $scope.fields.push($scope.field);
-                $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
-                $scope.field = '';
-            };
+        $scope.$watch('fields', function () {
+            localStorageService.add('fields', $scope.fields.join('\n'));
+        }, true);
 
-            $scope.removeField = function(index) {
-                $scope.columns.push($scope.fields[index]);
-                $scope.fields.splice(index, 1);
-            };
+        $scope.addField = function () {
+            $scope.fields.push($scope.field);
+            $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
+            $scope.field = '';
+        };
 
-            es.indices.getMapping({
-                'index': index
-            }).then(function(response) {
-                var myTypes = [];
-                var myColumns = [];
-                for (var index in response) {
-                    for (var type in response[index].mappings) {
-                        if (myTypes.indexOf(type) === -1 && type !== "_default_") {
-                            myTypes.push(type);
-                            var properties = response[index].mappings[type].properties;
-                            for (var field in properties) {
-                                if (!isFieldStored(fieldsInStore, field)) {
-                                    myColumns.push(field);
-                                    //handleSubfields(properties[field], field, myColumns, undefined);
-                                }
+        $scope.removeField = function (index) {
+            $scope.columns.push($scope.fields[index]);
+            $scope.fields.splice(index, 1);
+        };
+
+        es.indices.getMapping({
+            'index': index
+        }).then(function (response) {
+            var myTypes = [];
+            var myColumns = [];
+            for (var index in response) {
+                for (var type in response[index].mappings) {
+                    if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+                        myTypes.push(type);
+                        var properties = response[index].mappings[type].properties;
+                        for (var field in properties) {
+                            if (!isFieldStored(fieldsInStore, field)) {
+                                myColumns.push(field);
+                                //handleSubfields(properties[field], field, myColumns, undefined);
                             }
                         }
                     }
                 }
-                $scope.columns = myColumns;
-            });
-
-            function isFieldStored(array, field) {
-                if (array.indexOf(field) === -1) {
-                    return false;
-                }
-                return true;
             }
-            
+            $scope.columns = myColumns;
+        });
+
+        function isFieldStored(array, field) {
+            if (array.indexOf(field) === -1) {
+                return false;
+            }
+            return true;
+        }
+
 //            function handleSubfields(field, fieldName, myFields, nestedPath) {
 //                if (field.hasOwnProperty("properties")) {
 //                    var nested = (field.type === "nested" || field.type === "object");
@@ -132,5 +140,5 @@ angular.module('mytodoApp')
 //                    }
 //                }
 //            }
-            
-        });
+
+    });

@@ -127,6 +127,9 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
     overflow-y: auto;
 }
 
-.btn-fixed-size {
-    min-width: 80px;
+.btn-fixed-width {
+    min-width: 150px;
+}
+.btn-fixed-height {
+    min-height: 34px;
 }
