@@ -5,4 +5,5 @@ dist
 .sass-cache
 app/bower_components
 nbproject/private
+.idea
 .bowerrc
