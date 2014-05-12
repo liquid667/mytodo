@@ -5,10 +5,12 @@ angular.module('mytodoApp')
         var timespan = 'Timespan';
         var from;
         var to = 'now';
+        var indices;
 
         return {
             timespan: timespan,
             from: from,
-            to: to
+            to: to,
+            indices: indices
         };
     });

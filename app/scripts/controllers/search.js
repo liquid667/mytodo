@@ -5,14 +5,12 @@ angular.module('mytodoApp')
         $scope.predicate = 'timestamp';
         $scope.reverse = 'true';
 
-        var index = 'logstash-2014.04.29';
-
         $scope.timespan = timespan;
 
         $scope.search = function () {
             usSpinnerService.spin('searchStatusSpinner');
             es.search({
-                'index': index,
+                'index': timespan.indices,
                 body: {
                     "query": {
                         "filtered": {
@@ -33,7 +31,7 @@ angular.module('mytodoApp')
                                         {
                                             "range": {
                                                 "@timestamp": {
-                                                    'from': timespan.from,
+                                                    "from": timespan.from.unix(),
                                                     "to": "now"
                                                 }
                                             }
@@ -83,7 +81,7 @@ angular.module('mytodoApp')
         };
 
         es.indices.getMapping({
-            'index': index
+//            'index': timespan.indices
         }).then(function (response) {
             var myTypes = [];
             var myColumns = [];
@@ -93,7 +91,7 @@ angular.module('mytodoApp')
                         myTypes.push(type);
                         var properties = response[index].mappings[type].properties;
                         for (var field in properties) {
-                            if (!isFieldStored(fieldsInStore, field)) {
+                            if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
                                 myColumns.push(field);
                                 //handleSubfields(properties[field], field, myColumns, undefined);
                             }
