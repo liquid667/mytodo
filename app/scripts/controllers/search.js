@@ -9,8 +9,12 @@ angular.module('mytodoApp')
         
         $scope.search = function () {
             usSpinnerService.spin('searchStatusSpinner');
+            var indices = timespan.indices;
+            
+            console.log('Indices123: %', indices);
+            
             es.search({
-                'index': getAvailableIndices(timespan.indices),
+                'index': indices,
                 body: {
                     "query": {
                         "filtered": {
@@ -31,7 +35,7 @@ angular.module('mytodoApp')
                                         {
                                             "range": {
                                                 "@timestamp": {
-                                                    "from": timespan.from.unix(),
+                                                    "from": timespan.from,
                                                     "to": "now"
                                                 }
                                             }
@@ -102,41 +106,12 @@ angular.module('mytodoApp')
                 $scope.columns = myColumns;
             });
         
-            function getAvailableIndices(indices) {
-                console.log('Incoming Indices: %s', indices.toString());
-                es.indices.getAliases({
-                    'index': indices,
-                    'ignore_missing': true
-                }).then(function(response) {
-                    var myIndices = [];
-                    for (var index in response) {
-                        myIndices.push(index);
-                    }
-                    console.log('Indices: %s', formatIndices(myIndices));
-                    return formatIndices(myIndices);
-                });
-            }
-
             function isFieldStored(array, field) {
                 if (array.indexOf(field) === -1) {
                     return false;
                 }
                 return true;
             }
-
-            function formatIndices(indices) {
-                var len = indices.length;
-                var indicesFormatted = '';
-                for (var i=0;i<len;i++) {
-                    if(i!==(len-1)){
-                        indicesFormatted += indices[i] + ',';
-                    } else {
-                        indicesFormatted += indices[i];
-                    }
-                }
-                return indicesFormatted;
-            }
-
 //            function handleSubfields(field, fieldName, myFields, nestedPath) {
 //                if (field.hasOwnProperty("properties")) {
 //                    var nested = (field.type === "nested" || field.type === "object");

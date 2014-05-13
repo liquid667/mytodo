@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $moment, timespan) {
+angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $moment, timespan, es) {
 
     $scope.timespan = timespan.timespan;
     $scope.times = ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '14d', '30d'];
+    $scope.indices = '';
 
 //    $scope.patterns = {
 //      date: /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/,
@@ -30,10 +31,29 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
             indices.push('logstash-' + itr.next().format('YYYY.MM.DD'));
         }
 
-        timespan.indices = formatIndices(indices);
+        timespan.indices = getAvailableIndices(indices);
+        console.log('InIndices: %s', timespan.indices.toString());
         timespan.from = from;
+        console.log('FrFrom: %s', timespan.from.toString());
         timespan.to = to;
     };
+    
+    function getAvailableIndices(indices) {
+        console.log('Incoming Indices: %s', indices.toString());
+        var myIndices = [];
+        es.indices.getAliases({
+            'index': indices,
+            'ignore_missing': true
+        }).then(function(response) {
+            var myIndices = [];
+            for (var index in response) {
+                myIndices.push(index);
+                console.log('index: %s', index);
+            }
+            console.log('myIndices: %s', myIndices.toString());
+        });
+        return myIndices;
+    }
     
     function formatIndices(indices) {
         var len = indices.length;
@@ -45,6 +65,8 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
                 indicesFormatted += indices[i];
             }
         }
+        
+        console.log('IndicesFormatted: %s',indicesFormatted);
         return indicesFormatted;
     }
 });
