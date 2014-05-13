@@ -1,23 +1,28 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('ModalCtrl', function($scope, $filter, es, localStorageService) {
+        .controller('ModalCtrl', function($scope, $filter, es, localStorageService, timespan, selectedfields) {
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
+            
+            selectedfields.fields = $scope.fields;
 
             $scope.$watch('fields', function() {
                 localStorageService.add('fields', $scope.fields.join('\n'));
             }, true);
 
-            $scope.addField = function() {
-                $scope.fields.push($scope.field);
-                $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
-                $scope.field = '';
+            $scope.addField = function(index) {
+                $scope.fields.push($scope.columns[index]);
+                $scope.columns = $filter('filter')($scope.columns, '!' + $scope.columns[index]);
+                
+                selectedfields.fields = $scope.fields;
             };
 
             $scope.removeField = function(index) {
                 $scope.columns.push($scope.fields[index]);
                 $scope.fields.splice(index, 1);
+                
+                selectedfields.fields = $scope.fields;
             };
 
             es.indices.getMapping({
@@ -31,7 +36,7 @@ angular.module('mytodoApp')
                             myTypes.push(type);
                             var properties = response[index].mappings[type].properties;
                             for (var field in properties) {
-                                if (!isFieldStored(fieldsInStore, field)) {
+                                if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
                                     myColumns.push(field);
                                 }
                             }

@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('mytodoApp')
-    .controller('QueryCtrl', function ($scope, $filter, es, localStorageService, usSpinnerService, timespan) {
+    .controller('QueryCtrl', function ($scope, $filter, es, localStorageService, usSpinnerService, timespan, selectedfields) {
         $scope.predicate = 'timestamp';
         $scope.reverse = 'true';
-
         $scope.timespan = timespan;
-
+        $scope.columns = selectedfields.fields;
+        
         $scope.search = function () {
             usSpinnerService.spin('searchStatusSpinner');
             es.search({
-                'index': timespan.indices,
+                'index': getAvailableIndices(timespan.indices),
                 body: {
                     "query": {
                         "filtered": {
@@ -80,34 +80,62 @@ angular.module('mytodoApp')
             $scope.fields.splice(index, 1);
         };
 
-        es.indices.getMapping({
-//            'index': timespan.indices
-        }).then(function (response) {
-            var myTypes = [];
-            var myColumns = [];
-            for (var index in response) {
-                for (var type in response[index].mappings) {
-                    if (myTypes.indexOf(type) === -1 && type !== "_default_") {
-                        myTypes.push(type);
-                        var properties = response[index].mappings[type].properties;
-                        for (var field in properties) {
-                            if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
-                                myColumns.push(field);
-                                //handleSubfields(properties[field], field, myColumns, undefined);
+            es.indices.getMapping({
+                'index': timespan.indices
+            }).then(function(response) {
+                var myTypes = [];
+                var myColumns = [];
+                for (var index in response) {
+                    for (var type in response[index].mappings) {
+                        if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+                            myTypes.push(type);
+                            var properties = response[index].mappings[type].properties;
+                            for (var field in properties) {
+                                if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
+                                    myColumns.push(field);
+                                    //handleSubfields(properties[field], field, myColumns, undefined);
+                                }
                             }
                         }
                     }
                 }
+                $scope.columns = myColumns;
+            });
+        
+            function getAvailableIndices(indices) {
+                console.log('Incoming Indices: %s', indices.toString());
+                es.indices.getAliases({
+                    'index': indices,
+                    'ignore_missing': true
+                }).then(function(response) {
+                    var myIndices = [];
+                    for (var index in response) {
+                        myIndices.push(index);
+                    }
+                    console.log('Indices: %s', formatIndices(myIndices));
+                    return formatIndices(myIndices);
+                });
             }
-            $scope.columns = myColumns;
-        });
 
-        function isFieldStored(array, field) {
-            if (array.indexOf(field) === -1) {
-                return false;
+            function isFieldStored(array, field) {
+                if (array.indexOf(field) === -1) {
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
+
+            function formatIndices(indices) {
+                var len = indices.length;
+                var indicesFormatted = '';
+                for (var i=0;i<len;i++) {
+                    if(i!==(len-1)){
+                        indicesFormatted += indices[i] + ',';
+                    } else {
+                        indicesFormatted += indices[i];
+                    }
+                }
+                return indicesFormatted;
+            }
 
 //            function handleSubfields(field, fieldName, myFields, nestedPath) {
 //                if (field.hasOwnProperty("properties")) {

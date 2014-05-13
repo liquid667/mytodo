@@ -1,11 +1,14 @@
 <div ng-controller="ModalCtrl">
 
-    <!-- Button trigger modal -->
-    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Show modal</button>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-offset-12 pull-right"><a data-toggle="modal" data-target="#columnSelectorModal"><span class="glyphicon glyphicon-cog"></span></a></div>
+        </div>
+    </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="columnSelectorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-full-width">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -13,7 +16,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <!-- field input -->
+                    <!-- field input
                     <form role="form" class="form-inline" ng-submit="addField()">
                         <div class="input-group">
                             <input type="text" ng-model="field" placeholder="Add field?" ng-options="column for column in columns" class="form-control" bs-typeahead>
@@ -22,13 +25,20 @@
                             </span>
                         </div>
                     </form>
+                     -->
                     <h5>Available columns</h5>
-                        <span ng-repeat="column in columns" class="label label-default" style="margin-left: 3px;">{{column}}</span>
+<!--                    
+                    <span ng-repeat="column in columns" class="label label-default" style="margin-left: 3px;">{{column}}</span>
+-->
+                    <span ng-repeat="column in columns" class="label label-default" style="margin-left: 3px;">
+                        <i class="glyphicon glyphicon-plus-sign" ng-click="addField($index)" style="cursor: pointer;"></i>
+                        {{column}}
+                    </span>
 
                     <h5>Selected columns</h5>
                     <!-- field list -->
                     <div ui-sortable ng-model="fields">
-                        <span ng-repeat="field in fields" class="label label-primary" style="cursor: move; margin-left: 3px;">
+                        <span ng-repeat="field in fields" class="label label-success" style="cursor: move; margin-left: 3px;">
                             {{field}}
                             <i class="glyphicon glyphicon-remove-sign" ng-click="removeField($index)" style="cursor: pointer;"></i>
                         </span>
@@ -41,5 +51,4 @@
             </div>
         </div>
     </div>
-
 </div>
