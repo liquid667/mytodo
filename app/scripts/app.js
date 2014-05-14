@@ -26,25 +26,9 @@ angular.module('mytodoApp', [
                 templateUrl: 'views/search.html',
                 controller: 'QueryCtrl'
             })
-            .when('/login', {
-              templateUrl: 'views/login.html',
-              controller: 'LoginCtrl'
-            })
-            .when('/modal', {
-              templateUrl: 'views/modal.html',
-              controller: 'ModalCtrl'
-            })
             .when('/config', {
               templateUrl: 'views/config.html',
               controller: 'ConfigCtrl'
-            })
-            .when('/timepicker', {
-              templateUrl: 'views/timepicker.html',
-              controller: 'TimepickerCtrl'
-            })
-            .when('/test', {
-              templateUrl: 'views/test.html',
-              controller: 'TestCtrl'
             })
             .otherwise({
                 redirectTo: '/search'

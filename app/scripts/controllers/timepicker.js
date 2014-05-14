@@ -38,7 +38,7 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
     };
     
     function getAvailableIndices(indices) {
-        console.log('getAvailableIndices.request: %s', indices.toString());
+//        console.log('getAvailableIndices.request: %s', indices.toString());
         es.indices.getAliases({
             'index': indices,
             'ignore_missing': true
@@ -48,7 +48,7 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
                 myIndices.push(index);
             }
             timespan.indices = formatIndices(myIndices);
-            console.log('getAvailableIndices.response: %s', timespan.indices);
+//            console.log('getAvailableIndices.response: %s', timespan.indices);
         });
     }
     
@@ -62,7 +62,7 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
                 indicesFormatted += indices[i];
             }
         }
-        console.log('IndicesFormatted: %s', indicesFormatted);
+//        console.log('IndicesFormatted: %s', indicesFormatted);
         return indicesFormatted;
     }
 });

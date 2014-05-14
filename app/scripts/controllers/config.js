@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('ConfigCtrl', function($scope, localStorageService, host, test2) {
+        .controller('ConfigCtrl', function($scope, localStorageService, host) {
             var hostnameInStore = localStorageService.get('hostname');
             $scope.hostname = hostnameInStore || 'localhost:9200';
     
