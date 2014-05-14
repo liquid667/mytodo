@@ -42,6 +42,10 @@ angular.module('mytodoApp', [
               templateUrl: 'views/timepicker.html',
               controller: 'TimepickerCtrl'
             })
+            .when('/test', {
+              templateUrl: 'views/test.html',
+              controller: 'TestCtrl'
+            })
             .otherwise({
                 redirectTo: '/search'
             });

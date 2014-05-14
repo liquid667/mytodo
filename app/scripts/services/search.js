@@ -1,12 +1,10 @@
 'use strict';
 
-// We define an EsConnector module that depends on the elasticsearch module.     
 angular.module('mytodoApp')
-    // Create the es service from the esFactory
-    .service('es', function (esFactory, localStorageService) {
-        var host = localStorageService.get('hostname') || 'localhost:9200';
+    .service('es', function (esFactory, host) {
+        var myHost = host;
 
         return esFactory({
-            host: host
+            host: myHost.hostname
         });
     });

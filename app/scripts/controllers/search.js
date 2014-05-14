@@ -5,16 +5,16 @@ angular.module('mytodoApp')
         $scope.predicate = 'timestamp';
         $scope.reverse = 'true';
         $scope.timespan = timespan;
-        $scope.columns = selectedfields.fields;
+
+        var fieldsInStore = localStorageService.get('fields');
+        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
+        
+        console.log('Fields: ', $scope.fields);
         
         $scope.search = function () {
             usSpinnerService.spin('searchStatusSpinner');
-            var indices = timespan.indices;
-            
-            console.log('Indices123: %', indices);
-            
             es.search({
-                'index': indices,
+                'index': timespan.indices,
                 body: {
                     "query": {
                         "filtered": {
@@ -66,52 +66,52 @@ angular.module('mytodoApp')
             });
         };
 
-        var fieldsInStore = localStorageService.get('fields');
-        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
-
-        $scope.$watch('fields', function () {
-            localStorageService.add('fields', $scope.fields.join('\n'));
-        }, true);
-
-        $scope.addField = function () {
-            $scope.fields.push($scope.field);
-            $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
-            $scope.field = '';
-        };
-
-        $scope.removeField = function (index) {
-            $scope.columns.push($scope.fields[index]);
-            $scope.fields.splice(index, 1);
-        };
-
-            es.indices.getMapping({
-                'index': timespan.indices
-            }).then(function(response) {
-                var myTypes = [];
-                var myColumns = [];
-                for (var index in response) {
-                    for (var type in response[index].mappings) {
-                        if (myTypes.indexOf(type) === -1 && type !== "_default_") {
-                            myTypes.push(type);
-                            var properties = response[index].mappings[type].properties;
-                            for (var field in properties) {
-                                if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
-                                    myColumns.push(field);
-                                    //handleSubfields(properties[field], field, myColumns, undefined);
-                                }
-                            }
-                        }
-                    }
-                }
-                $scope.columns = myColumns;
-            });
-        
-            function isFieldStored(array, field) {
-                if (array.indexOf(field) === -1) {
-                    return false;
-                }
-                return true;
-            }
+//        var fieldsInStore = localStorageService.get('fields');
+//        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
+//
+//        $scope.$watch('fields', function () {
+//            localStorageService.add('fields', $scope.fields.join('\n'));
+//        }, true);
+//
+//        $scope.addField = function () {
+//            $scope.fields.push($scope.field);
+//            $scope.columns = $filter('filter')($scope.columns, '!' + $scope.field);
+//            $scope.field = '';
+//        };
+//
+//        $scope.removeField = function (index) {
+//            $scope.columns.push($scope.fields[index]);
+//            $scope.fields.splice(index, 1);
+//        };
+//
+//            es.indices.getMapping({
+//                'index': timespan.indices
+//            }).then(function(response) {
+//                var myTypes = [];
+//                var myColumns = [];
+//                for (var index in response) {
+//                    for (var type in response[index].mappings) {
+//                        if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+//                            myTypes.push(type);
+//                            var properties = response[index].mappings[type].properties;
+//                            for (var field in properties) {
+//                                if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
+//                                    myColumns.push(field);
+//                                    //handleSubfields(properties[field], field, myColumns, undefined);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//                $scope.columns = myColumns;
+//            });
+//        
+//            function isFieldStored(array, field) {
+//                if (array.indexOf(field) === -1) {
+//                    return false;
+//                }
+//                return true;
+//            }
 //            function handleSubfields(field, fieldName, myFields, nestedPath) {
 //                if (field.hasOwnProperty("properties")) {
 //                    var nested = (field.type === "nested" || field.type === "object");

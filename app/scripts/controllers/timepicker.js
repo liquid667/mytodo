@@ -3,7 +3,7 @@
 angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $moment, timespan, es) {
 
     $scope.timespan = timespan.timespan;
-    $scope.times = ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '14d', '30d'];
+    $scope.times = ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '14d', '21d', '30d'];
     $scope.indices = '';
 
 //    $scope.patterns = {
@@ -30,17 +30,15 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
         while (itr.hasNext()) {
             indices.push('logstash-' + itr.next().format('YYYY.MM.DD'));
         }
+        
+        getAvailableIndices(indices);
 
-        timespan.indices = getAvailableIndices(indices);
-        console.log('InIndices: %s', timespan.indices.toString());
         timespan.from = from;
-        console.log('FrFrom: %s', timespan.from.toString());
         timespan.to = to;
     };
     
     function getAvailableIndices(indices) {
-        console.log('Incoming Indices: %s', indices.toString());
-        var myIndices = [];
+        console.log('getAvailableIndices.request: %s', indices.toString());
         es.indices.getAliases({
             'index': indices,
             'ignore_missing': true
@@ -48,11 +46,10 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
             var myIndices = [];
             for (var index in response) {
                 myIndices.push(index);
-                console.log('index: %s', index);
             }
-            console.log('myIndices: %s', myIndices.toString());
+            timespan.indices = formatIndices(myIndices);
+            console.log('getAvailableIndices.response: %s', timespan.indices);
         });
-        return myIndices;
     }
     
     function formatIndices(indices) {
@@ -65,8 +62,7 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function($scope, $momen
                 indicesFormatted += indices[i];
             }
         }
-        
-        console.log('IndicesFormatted: %s',indicesFormatted);
+        console.log('IndicesFormatted: %s', indicesFormatted);
         return indicesFormatted;
     }
 });
