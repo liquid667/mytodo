@@ -1,18 +1,16 @@
 'use strict';
 
 angular.module('mytodoApp')
-        .controller('ConfigCtrl', function($scope, localStorageService, host) {
-            var hostnameInStore = localStorageService.get('hostname');
-            $scope.hostname = hostnameInStore || 'localhost:9200';
-    
+        .controller('ConfigCtrl', function($scope, localStorageService, configService) {
             $scope.saveConfig = function() {
                 localStorageService.set('hostname', $scope.hostname);
-                host.host = $scope.hostname;
+                cs.hostname = $scope.hostname;
                 
-                test2.someValue = $scope.hostname;
-                
-                console.log(test2.someValue);
-                
-                console.log('host: %s', host.host);
+                console.log('saveConfig: hostname: %s', cs.hostname);
             };
+            
+            // Load the configration
+            var cs = configService;
+            var hostnameInStore = localStorageService.get('hostname');
+            $scope.hostname = hostnameInStore || 'localhost:9200';
         });

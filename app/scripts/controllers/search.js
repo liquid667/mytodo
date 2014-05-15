@@ -2,15 +2,6 @@
 
 angular.module('mytodoApp')
     .controller('QueryCtrl', function ($scope, $filter, es, localStorageService, usSpinnerService, timespan) {
-        $scope.predicate = 'timestamp';
-        $scope.reverse = 'true';
-        $scope.timespan = timespan;
-
-        var fieldsInStore = localStorageService.get('fields');
-        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
-
-        getMapping();
-        
         $scope.search = function () {
             usSpinnerService.spin('searchStatusSpinner');
             es.search({
@@ -111,4 +102,13 @@ angular.module('mytodoApp')
                 }
                 return true;
             }
+            
+        $scope.predicate = 'timestamp';
+        $scope.reverse = 'true';
+        $scope.timespan = timespan;
+
+        var fieldsInStore = localStorageService.get('fields');
+        $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
+
+        getMapping();
     });

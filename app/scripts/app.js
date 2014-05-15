@@ -14,7 +14,7 @@ angular.module('mytodoApp', [
             'angular-momentjs'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
-            localStorageServiceProvider.setPrefix('ls');
+            localStorageServiceProvider.setPrefix('logsearch');
         }])
     .config(function($routeProvider) {
         $routeProvider
