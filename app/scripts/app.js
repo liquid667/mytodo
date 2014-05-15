@@ -24,7 +24,7 @@ angular.module('mytodoApp', [
             })
             .when('/search', {
                 templateUrl: 'views/search.html',
-                controller: 'QueryCtrl'
+                controller: 'SearchCtrl'
             })
             .when('/config', {
               templateUrl: 'views/config.html',

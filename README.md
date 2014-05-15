@@ -1,9 +1,9 @@
-Logsearch simple client
+###Logsearch simple client
 ======
 Simplified elasticsearch/logstash client.
 Current support selection of columns and sorting of column.
 
-Dependencies
+#Dependencies
 =====
 - angularjs
 - bootstrap
@@ -11,8 +11,8 @@ Dependencies
 - spinner.js
 - [...]
 
-Installing
+#Installing
 =====
 run
-$> npm install
-$> bower install
+1. $> npm install
+2. $> bower install
