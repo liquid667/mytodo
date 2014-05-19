@@ -90,11 +90,15 @@
     <!--
     <pre>Sorting predicate={{predicate}}; reverse={{reverse}}</pre>
     -->
-    <span class="badge">{{'Count:' + hitCount}}</span>
+    <span class="badge">{{'Count:' + hitCount}}</span><br>
     <table class="table table-striped table-hover table-condensed font-sm">
         <thead>
             <tr>
-                <th ng-repeat="field in fields" ng-click="changeSorting(field);" style="cursor: pointer;">{{field}}</th>
+                <th ng-repeat="field in fields" ng-click="changeSorting(field);" style="cursor: pointer;">
+                    {{field}}&nbsp;
+                    <span ng-if="sort.column === field && sort.descending" class="glyphicon glyphicon-chevron-down" />
+                    <span ng-if="sort.column === field && !sort.descending" class="glyphicon glyphicon-chevron-up" />
+                </th>
             </tr>
         </thead>
         <tbody>
