@@ -103,8 +103,29 @@ angular.module('mytodoApp')
       return true;
     }
 
-    $scope.predicate = 'timestamp';
-    $scope.reverse = 'true';
+    $scope.changeSorting = function(column) {
+      console.log('Sort new column: %s', column);
+      var sort = $scope.sort;
+      console.log('Sort: [column: %s, descending: %s]', $scope.sort.column, $scope.sort.descending);
+
+      if (sort.column == column) {
+        sort.descending = !sort.descending;
+      } else {
+        sort.column = column;
+        sort.descending = false;
+      }
+
+//      $scope.sort = sort;
+
+      console.log('Sort: [column: %s, descending: %s]', $scope.sort.column, $scope.sort.descending);
+    };
+
+    $scope.sort = {
+      column: 'timestamp',
+      descending: false
+    };
+//    $scope.predicate = 'timestamp';
+//    $scope.reverse = 'true';
     $scope.timespan = timespan;
 
     var fieldsInStore = localStorageService.get('fields');
