@@ -48,7 +48,7 @@ angular.module('mytodoApp')
                 }).then(function(response) {
                     usSpinnerService.stop('searchStatusSpinner');
                     $scope.hits = response.hits.hits;
-                    getSearchResult(response);
+//                    getSearchResult(response);
                     $scope.hitCount = response.hits.total;
                 }, function(error) {
                     if (error) {
@@ -58,14 +58,14 @@ angular.module('mytodoApp')
                 });
             };
             
-            var getSearchResult = function(response){
-                for(var index in response.hits.hits){
-                    console.log('index: %s', index);
-                    for(var hit in response.hits.hits[index]){
-                        console.log('hit: %s', hit['_index']);
-                    }
-                }
-            };
+//            var getSearchResult = function(response){
+//                for(var index in response.hits.hits){
+//                    console.log('index: %s', index);
+//                    for(var hit in response.hits.hits[index]){
+//                        console.log('hit: %s', hit['_index']);
+//                    }
+//                }
+//            };
 
             $scope.$watch('fields', function() {
                 localStorageService.add('fields', $scope.fields.join('\n'));
