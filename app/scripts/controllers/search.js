@@ -48,7 +48,7 @@ angular.module('mytodoApp')
                 }).then(function(response) {
                     usSpinnerService.stop('searchStatusSpinner');
                     $scope.hits = response.hits.hits;
-//                    getSearchResult(response);
+                    getSearchResult(response);
                     $scope.hitCount = response.hits.total;
                 }, function(error) {
                     if (error) {
@@ -58,14 +58,21 @@ angular.module('mytodoApp')
                 });
             };
             
-//            var getSearchResult = function(response){
-//                for(var index in response.hits.hits){
-//                    console.log('index: %s', index);
-//                    for(var hit in response.hits.hits[index]){
-//                        console.log('hit: %s', hit['_index']);
-//                    }
-//                }
-//            };
+            var getSearchResult = function(response){
+                var hits = response.hits.hits;
+                
+                for(var index in hits){
+                    for(var hit in hits[index]){
+                        if(hit === '_source'){
+                            var fields = hits[index]._source;
+                            console.log('fields: %o', fields);
+//                            for(var field in hits[index]._source){
+//                                console.log('field: %s, value: %s', field, fields[field].toString());
+//                            }
+                        }
+                    }
+                }
+            };
 
             $scope.$watch('fields', function() {
                 localStorageService.add('fields', $scope.fields.join('\n'));
@@ -87,12 +94,18 @@ angular.module('mytodoApp')
                     var myTypes = [];
                     var myColumns = [];
                     for (var index in response) {
+                        // Check if it is a string containing logstash
                         if (isFieldStored(index, 'logstash')) {
+                            // extract all mappings from index, can be more than one
                             for (var type in response[index].mappings) {
+                                // if mapping isnt already stored in types arrray or _default_ then add to types array
                                 if (myTypes.indexOf(type) === -1 && type !== "_default_") {
                                     myTypes.push(type);
+                                    // fetch all properties from mappings[type].properties
                                     var properties = response[index].mappings[type].properties;
+                                    // loop through array of properties
                                     for (var field in properties) {
+                                        // if not field is stored then store it in columns array
                                         if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
                                             myColumns.push(field);
                                         }
@@ -127,7 +140,7 @@ angular.module('mytodoApp')
             };
 
             $scope.sort = {
-                column: 'timestamp',
+                column: 'level',
                 descending: true
             };
             

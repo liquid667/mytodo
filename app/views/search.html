@@ -103,7 +103,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="hit in hits">
-                <td ng-repeat="field in fields | orderBy:sort.column:sort.descending">{{hit._source[field].toString()}}</td>
+                <td ng-repeat="field in fields">{{hit._source[field].toString()}}</td>
             </tr>
         </tbody>
     </table>
