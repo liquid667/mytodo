@@ -36,11 +36,11 @@ angular.module('mytodoApp')
                                 }
                             }
                         },
-                        "size": 50,
+                        "size": $scope.responseSize,
                         "sort": [
                             {
                                 "@timestamp": {
-                                    "order": "desc"
+                                    "order": $scope.sort.descending ? 'desc' : 'asc'
                                 }
                             }
                         ]
@@ -48,7 +48,6 @@ angular.module('mytodoApp')
                 }).then(function(response) {
                     usSpinnerService.stop('searchStatusSpinner');
                     $scope.hits = response.hits.hits;
-                    getSearchResult(response);
                     $scope.hitCount = response.hits.total;
                 }, function(error) {
                     if (error) {
@@ -58,21 +57,21 @@ angular.module('mytodoApp')
                 });
             };
             
-            var getSearchResult = function(response){
-                var hits = response.hits.hits;
-                
-                for(var index in hits){
-                    for(var hit in hits[index]){
-                        if(hit === '_source'){
-                            var fields = hits[index]._source;
-                            console.log('fields: %o', fields);
-//                            for(var field in hits[index]._source){
-//                                console.log('field: %s, value: %s', field, fields[field].toString());
-//                            }
-                        }
-                    }
-                }
-            };
+//            var getSearchResult = function(response){
+//                var hits = response.hits.hits;
+//                
+//                for(var index in hits){
+//                    for(var hit in hits[index]){
+//                        if(hit === '_source'){
+//                            var fields = hits[index]._source;
+//                            console.log('fields: %o', fields);
+////                            for(var field in hits[index]._source){
+////                                console.log('field: %s, value: %s', field, fields[field].toString());
+////                            }
+//                        }
+//                    }
+//                }
+//            };
 
             $scope.$watch('fields', function() {
                 localStorageService.add('fields', $scope.fields.join('\n'));
@@ -137,12 +136,15 @@ angular.module('mytodoApp')
                     sort.descending = false;
                 }
                 console.log('Sort: [column: %s, descending: %s]', $scope.sort.column, $scope.sort.descending);
+                
+                $scope.search();
             };
 
             $scope.sort = {
-                column: 'level',
+                column: '@timestamp',
                 descending: true
             };
+            $scope.responseSize = 500;
             
             $scope.timespan = timespan;
 

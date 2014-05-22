@@ -11,7 +11,8 @@ angular.module('mytodoApp', [
             'mgcrea.ngStrap',
             'ngAnimate',
             'angularSpinner',
-            'angular-momentjs'
+            'angular-momentjs',
+            'dangle'
         ])
     .config(['localStorageServiceProvider', function(localStorageServiceProvider) {
             localStorageServiceProvider.setPrefix('logsearch');
