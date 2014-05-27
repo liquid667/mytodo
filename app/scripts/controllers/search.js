@@ -2,60 +2,60 @@
 
 angular.module('mytodoApp')
         .controller('SearchCtrl', function($scope, $filter, es, localStorageService, usSpinnerService, timespan) {
-            $scope.search = function() {
-                usSpinnerService.spin('searchStatusSpinner');
-                es.search({
-                    'index': timespan.indices,
-                    body: {
-                        "query": {
-                            "filtered": {
-                                "query": {
-                                    "bool": {
-                                        "should": [
-                                            {
-                                                "query_string": {
-                                                    "query": $scope.searchCriterias
-                                                }
-                                            }
-                                        ]
-                                    }
-                                },
-                                "filter": {
-                                    "bool": {
-                                        "must": [
-                                            {
-                                                "range": {
-                                                    "@timestamp": {
-                                                        "from": timespan.from,
-                                                        "to": "now"
-                                                    }
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        },
-                        "size": $scope.responseSize,
-                        "sort": [
-                            {
-                                "@timestamp": {
-                                    "order": $scope.sort.descending ? 'desc' : 'asc'
-                                }
-                            }
-                        ]
-                    }
-                }).then(function(response) {
-                    usSpinnerService.stop('searchStatusSpinner');
-                    $scope.hits = response.hits.hits;
-                    $scope.hitCount = response.hits.total;
-                }, function(error) {
-                    if (error) {
-                        usSpinnerService.stop('searchStatusSpinner');
-                        console.log('Elasticsearch returned error: ' + error);
-                    }
-                });
-            };
+//            $scope.search = function() {
+//                usSpinnerService.spin('searchStatusSpinner');
+//                es.search({
+//                    'index': timespan.indices,
+//                    body: {
+//                        "query": {
+//                            "filtered": {
+//                                "query": {
+//                                    "bool": {
+//                                        "should": [
+//                                            {
+//                                                "query_string": {
+//                                                    "query": $scope.searchCriterias
+//                                                }
+//                                            }
+//                                        ]
+//                                    }
+//                                },
+//                                "filter": {
+//                                    "bool": {
+//                                        "must": [
+//                                            {
+//                                                "range": {
+//                                                    "@timestamp": {
+//                                                        "from": timespan.from,
+//                                                        "to": "now"
+//                                                    }
+//                                                }
+//                                            }
+//                                        ]
+//                                    }
+//                                }
+//                            }
+//                        },
+//                        "size": $scope.responseSize,
+//                        "sort": [
+//                            {
+//                                "@timestamp": {
+//                                    "order": $scope.sort.descending ? 'desc' : 'asc'
+//                                }
+//                            }
+//                        ]
+//                    }
+//                }).then(function(response) {
+//                    usSpinnerService.stop('searchStatusSpinner');
+//                    $scope.hits = response.hits.hits;
+//                    $scope.hitCount = response.hits.total;
+//                }, function(error) {
+//                    if (error) {
+//                        usSpinnerService.stop('searchStatusSpinner');
+//                        console.log('Elasticsearch returned error: ' + error);
+//                    }
+//                });
+//            };
             
 //            var getSearchResult = function(response){
 //                var hits = response.hits.hits;
@@ -156,6 +156,13 @@ angular.module('mytodoApp')
             es.getMapping(fieldsInStore, function (resp) {
                 $scope.columns = resp;
             });
+            
+            $scope.search = function() {
+                es.search(timespan.indices, $scope.searchCriterias, timespan.from, ($scope.sort.descending ? 'desc' : 'asc'), function(response){
+                   $scope.hits = response.hits.hits;
+                   $scope.hitCount = response.hits.total;
+                });
+            };
 
 //            getMapping();
         });

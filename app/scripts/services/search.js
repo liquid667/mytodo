@@ -15,6 +15,57 @@ angular.module('mytodoApp')
                 });
             };
             
+            this.search = function(indices, criterias, from, order, callback) {
+                es.search({
+                    'index': indices,
+                    body: {
+                        "query": {
+                            "filtered": {
+                                "query": {
+                                    "bool": {
+                                        "should": [
+                                            {
+                                                "query_string": {
+                                                    "query": criterias
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                "filter": {
+                                    "bool": {
+                                        "must": [
+                                            {
+                                                "range": {
+                                                    "@timestamp": {
+                                                        "from": from,
+                                                        "to": "now"
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "size": 100,
+                        "sort": [
+                            {
+                                "@timestamp": {
+                                    "order": order
+                                }
+                            }
+                        ]
+                    }
+                }).then(function(response) {
+                    return callback(response);
+                }, function(error) {
+                    if (error) {
+                        console.log('Elasticsearch returned error: ' + error);
+                    }
+                });
+            };
+
             this.getMapping = function(fieldsInStore, callback) {
                 es.indices.getMapping({
                 }).then(function(response) {
