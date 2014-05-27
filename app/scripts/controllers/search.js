@@ -87,42 +87,42 @@ angular.module('mytodoApp')
                 $scope.fields.splice(index, 1);
             };
 
-            var getMapping = function() {
-                es.indices.getMapping({
-                }).then(function(response) {
-                    var myTypes = [];
-                    var myColumns = [];
-                    for (var index in response) {
-                        // Check if it is a string containing logstash
-                        if (isFieldStored(index, 'logstash')) {
-                            // extract all mappings from index, can be more than one
-                            for (var type in response[index].mappings) {
-                                // if mapping isnt already stored in types arrray or _default_ then add to types array
-                                if (myTypes.indexOf(type) === -1 && type !== "_default_") {
-                                    myTypes.push(type);
-                                    // fetch all properties from mappings[type].properties
-                                    var properties = response[index].mappings[type].properties;
-                                    // loop through array of properties
-                                    for (var field in properties) {
-                                        // if not field is stored then store it in columns array
-                                        if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
-                                            myColumns.push(field);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    $scope.columns = myColumns;
-                });
-            };
+//            var getMapping = function() {
+//                es.indices.getMapping({
+//                }).then(function(response) {
+//                    var myTypes = [];
+//                    var myColumns = [];
+//                    for (var index in response) {
+//                        // Check if it is a string containing logstash
+//                        if (isFieldStored(index, 'logstash')) {
+//                            // extract all mappings from index, can be more than one
+//                            for (var type in response[index].mappings) {
+//                                // if mapping isnt already stored in types arrray or _default_ then add to types array
+//                                if (myTypes.indexOf(type) === -1 && type !== "_default_") {
+//                                    myTypes.push(type);
+//                                    // fetch all properties from mappings[type].properties
+//                                    var properties = response[index].mappings[type].properties;
+//                                    // loop through array of properties
+//                                    for (var field in properties) {
+//                                        // if not field is stored then store it in columns array
+//                                        if (!isFieldStored(fieldsInStore, field) && !isFieldStored(myColumns, field)) {
+//                                            myColumns.push(field);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    $scope.columns = myColumns;
+//                });
+//            };
 
-            function isFieldStored(array, field) {
-                if (array.indexOf(field) === -1) {
-                    return false;
-                }
-                return true;
-            }
+//            function isFieldStored(array, field) {
+//                if (array.indexOf(field) === -1) {
+//                    return false;
+//                }
+//                return true;
+//            }
 
             $scope.changeSorting = function(column) {
                 console.log('Sort new column: %s', column);
@@ -144,6 +144,8 @@ angular.module('mytodoApp')
                 column: '@timestamp',
                 descending: true
             };
+
+
             $scope.responseSize = 500;
             
             $scope.timespan = timespan;
@@ -151,5 +153,9 @@ angular.module('mytodoApp')
             var fieldsInStore = localStorageService.get('fields');
             $scope.fields = fieldsInStore && fieldsInStore.split('\n') || ['@timestamp', "message"];
 
-            getMapping();
+            es.getMapping(fieldsInStore, function (resp) {
+                $scope.columns = resp;
+            });
+
+//            getMapping();
         });

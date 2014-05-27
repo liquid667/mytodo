@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('mytodoApp')
-  .controller('ConfigCtrl', function ($scope, localStorageService) {
+  .controller('ConfigCtrl', function ($scope, es, localStorageService) {
     $scope.saveConfig = function () {
       localStorageService.set('hostname', $scope.hostname);
+      es.changeServerAddress($scope.hostname);
     };
 
     // Load the configration

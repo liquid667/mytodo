@@ -36,33 +36,39 @@ angular.module('mytodoApp').controller('TimepickerCtrl', function ($scope, $mome
     timespan.from = from;
     timespan.to = to;
   };
-
-  function getAvailableIndices(indices) {
-//        console.log('getAvailableIndices.request: %s', indices.toString());
-    es.indices.getAliases({
-      'index': indices,
-      'ignore_missing': true
-    }).then(function (response) {
-      var myIndices = [];
-      for (var index in response) {
-        myIndices.push(index);
-      }
-      timespan.indices = formatIndices(myIndices);
-//            console.log('getAvailableIndices.response: %s', timespan.indices);
-    });
-  }
-
-  function formatIndices(indices) {
-    var len = indices.length;
-    var indicesFormatted = '';
-    for (var i = 0; i < len; i++) {
-      if (i !== (len - 1)) {
-        indicesFormatted += indices[i] + ',';
-      } else {
-        indicesFormatted += indices[i];
-      }
-    }
-//        console.log('IndicesFormatted: %s', indicesFormatted);
-    return indicesFormatted;
-  }
+  
+    var getAvailableIndices = function(fieldsInStore) {
+        es.getAvailableIndices(fieldsInStore, function (resp) {
+            timespan.indices = resp;
+        });
+    };
+    
+//  function getAvailableIndices(indices) {
+////        console.log('getAvailableIndices.request: %s', indices.toString());
+//    es.indices.getAliases({
+//      'index': indices,
+//      'ignore_missing': true
+//    }).then(function (response) {
+//      var myIndices = [];
+//      for (var index in response) {
+//        myIndices.push(index);
+//      }
+//      timespan.indices = formatIndices(myIndices);
+////            console.log('getAvailableIndices.response: %s', timespan.indices);
+//    });
+//  }
+//
+//  function formatIndices(indices) {
+//    var len = indices.length;
+//    var indicesFormatted = '';
+//    for (var i = 0; i < len; i++) {
+//      if (i !== (len - 1)) {
+//        indicesFormatted += indices[i] + ',';
+//      } else {
+//        indicesFormatted += indices[i];
+//      }
+//    }
+////        console.log('IndicesFormatted: %s', indicesFormatted);
+//    return indicesFormatted;
+//  }
 });
