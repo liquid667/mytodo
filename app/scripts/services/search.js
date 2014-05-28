@@ -62,6 +62,7 @@ angular.module('mytodoApp')
                 }, function(error) {
                     if (error) {
                         console.log('Elasticsearch returned error: ' + error);
+                        return callback(error);
                     }
                 });
             };
@@ -139,11 +140,3 @@ angular.module('mytodoApp')
         
     return new ElasticService(esFactory, configService);
    });
-//  .service('es1', function (esFactory, localStorageService) {
-//    var hostname = localStorageService.get('hostname') || 'localhost:9200';
-//
-//    return esFactory({
-//      host: hostname
-//    });
-//  })
-//});
